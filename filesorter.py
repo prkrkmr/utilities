@@ -22,3 +22,4 @@ for i in li :
             os.mkdir(a)
             os.rename(i,'./'+a+'/'+i)
 print "Sorted"
+print "Thank You for using it."
