@@ -21,7 +21,7 @@ def check_dir():
     or not. If not it creates that directory.
     '''
     if path.exists(lyricsFolder) == False:
-        mkdir(face_lock_dir)
+        mkdir(lyricsFolder)
 
 
 
