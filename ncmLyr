@@ -1,0 +1,9 @@
+#!/usr/bin/env python
+
+import subprocess
+
+songArtist = subprocess.Popen("echo $(ncmpcpp --current-song %a)", shell=True, stdout=subprocess.PIPE).stdout.read().rstrip('\n')
+
+songTitle= subprocess.Popen("echo $(ncmpcpp --current-song %t)", shell=True, stdout=subprocess.PIPE).stdout.read().rstrip('\n')
+
+subprocess.call("lyrics_get --artist " + songArtist + " --song " + songTitle, shell=True)
