@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+from os.path import expanduser
+from os import path, mkdir
+from sys import argv
+from json import loads
+from requests import get
+
+#lyrics folder in which the lyrics will be saved
+lyricsFolder = expanduser("~") + '/.lyrics'
+
+#takes the first argument provided to the script and save it as artistName
+artistName = argv[1]
+
+#takes the second argument provided to the script and save it as titleName
+titleName = argv[2]
+
+#Using the free api provided by the api.lyrics.ovh to get the lyrics
+apiLink = 'https://api.lyrics.ovh/v1/' + artistName + '/' + titleName
+
+#Gets the data which is in string format converts it into json and get the content of lyrics
+#and save it to lyricsContent
+lyricsContent = loads(get(apiLink).content)['lyrics']
+
+#saving the filename as artistName_titleName for eg. adele_hello
+fileName = artistName + '_' + titleName
+
+#Storing the lyrics to the filename
+lyricsFile = open(lyricsFolder + '/' + fileName,'w')
+lyricsFile.write(lyricsContent)
+lyricsFile.close()
+
