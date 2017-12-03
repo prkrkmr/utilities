@@ -1,19 +1,55 @@
 #!/usr/bin/env python
 
 from os.path import expanduser
+from os.path import isfile
 from os import path, mkdir
 from sys import argv
+import argparse
 from json import loads
 from requests import get
+argumentParser = argparse.ArgumentParser()
+
+argumentParser.add_argument('--artist',help='enter the artist name', nargs='*')
+argumentParser.add_argument('--song',help='enter the song name', nargs='*')
+lyricsArugments = argumentParser.parse_args()
 
 #lyrics folder in which the lyrics will be saved
 lyricsFolder = expanduser("~") + '/.lyrics'
+def check_dir():
+    '''
+    Checks if the directory assigned for lyrics exists
+    or not. If not it creates that directory.
+    '''
+    if path.exists(lyricsFolder) == False:
+        mkdir(face_lock_dir)
+
+
+
 
 #takes the first argument provided to the script and save it as artistName
-artistName = argv[1]
+artistName = ''
+for word in lyricsArugments.artist:
+    artistName = artistName + word + ' '
 
 #takes the second argument provided to the script and save it as titleName
-titleName = argv[2]
+titleName = '' 
+for word in lyricsArugments.song:
+    titleName = titleName + word + ' '
+
+mArtistName = ''
+mTitleName = ''
+for word in lyricsArugments.artist:
+    mArtistName = mArtistName + word + '_'
+mArtistName = mArtistName.rstrip('_')
+for word in lyricsArugments.song:
+    mTitleName = mTitleName + word + '_'
+mTitleName= mTitleName.rstrip('_')
+fileName = mArtistName + '_' + mTitleName
+
+if isfile(lyricsFolder+'/'+fileName) == True:
+    lyricsFile = open(lyricsFolder + '/' + fileName,'r')
+    lyricsContent = lyricsFile.read()
+    print lyricsContent
 
 #Using the free api provided by the api.lyrics.ovh to get the lyrics
 apiLink = 'https://api.lyrics.ovh/v1/' + artistName + '/' + titleName
@@ -21,9 +57,10 @@ apiLink = 'https://api.lyrics.ovh/v1/' + artistName + '/' + titleName
 #Gets the data which is in string format converts it into json and get the content of lyrics
 #and save it to lyricsContent
 lyricsContent = loads(get(apiLink).content)['lyrics']
+print lyricsContent
 
 #saving the filename as artistName_titleName for eg. adele_hello
-fileName = artistName + '_' + titleName
+
 
 #Storing the lyrics to the filename
 lyricsFile = open(lyricsFolder + '/' + fileName,'w')
