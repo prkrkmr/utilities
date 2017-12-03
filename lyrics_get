@@ -51,19 +51,19 @@ if isfile(lyricsFolder+'/'+fileName) == True:
     lyricsContent = lyricsFile.read()
     print lyricsContent
 
-#Using the free api provided by the api.lyrics.ovh to get the lyrics
-apiLink = 'https://api.lyrics.ovh/v1/' + artistName + '/' + titleName
+else:
+    #Using the free api provided by the api.lyrics.ovh to get the lyrics
+    apiLink = 'https://api.lyrics.ovh/v1/' + artistName + '/' + titleName
 
-#Gets the data which is in string format converts it into json and get the content of lyrics
-#and save it to lyricsContent
-lyricsContent = loads(get(apiLink).content)['lyrics']
-print lyricsContent
+    #Gets the data which is in string format converts it into json and get the content of lyrics
+    #and save it to lyricsContent
+    lyricsContent = loads(get(apiLink).content)['lyrics']
+    print lyricsContent
 
-#saving the filename as artistName_titleName for eg. adele_hello
+    #saving the filename as artistName_titleName for eg. adele_hello
 
 
-#Storing the lyrics to the filename
-lyricsFile = open(lyricsFolder + '/' + fileName,'w')
-lyricsFile.write(lyricsContent)
-lyricsFile.close()
-
+    #Storing the lyrics to the filename
+    lyricsFile = open(lyricsFolder + '/' + fileName,'w')
+    lyricsFile.write(lyricsContent)
+    lyricsFile.close()
