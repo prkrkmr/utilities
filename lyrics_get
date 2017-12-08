@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from os.path import join
 from os.path import expanduser
 from os.path import isfile
 from os import path, mkdir
@@ -7,14 +8,16 @@ from sys import argv
 import argparse
 from json import loads
 from requests import get
-argumentParser = argparse.ArgumentParser()
 
+
+argumentParser = argparse.ArgumentParser()
 argumentParser.add_argument('--artist',help='enter the artist name', nargs='*')
 argumentParser.add_argument('--song',help='enter the song name', nargs='*')
 lyricsArugments = argumentParser.parse_args()
 
 #lyrics folder in which the lyrics will be saved
-lyricsFolder = expanduser("~") + '/.lyrics'
+lyricsFolder = join(expanduser("~") , '.lyrics')
+
 def check_dir():
     '''
     Checks if the directory assigned for lyrics exists
@@ -22,9 +25,6 @@ def check_dir():
     '''
     if path.exists(lyricsFolder) == False:
         mkdir(lyricsFolder)
-
-
-
 
 #takes the first argument provided to the script and save it as artistName
 artistName = ''
@@ -46,8 +46,8 @@ for word in lyricsArugments.song:
 mTitleName= mTitleName.rstrip('_')
 fileName = mArtistName + '_' + mTitleName
 
-if isfile(lyricsFolder+'/'+fileName) == True:
-    lyricsFile = open(lyricsFolder + '/' + fileName,'r')
+if isfile(join(lyricsFolder,fileName)) == True:
+    lyricsFile = open(join(lyricsFolder, fileName),'r')
     lyricsContent = lyricsFile.read()
     print lyricsContent
 
@@ -60,10 +60,7 @@ else:
     lyricsContent = loads(get(apiLink).content)['lyrics']
     print lyricsContent
 
-    #saving the filename as artistName_titleName for eg. adele_hello
-
-
     #Storing the lyrics to the filename
-    lyricsFile = open(lyricsFolder + '/' + fileName,'w')
+    lyricsFile = open(join(lyricsFolder, fileName),'w')
     lyricsFile.write(lyricsContent)
     lyricsFile.close()
